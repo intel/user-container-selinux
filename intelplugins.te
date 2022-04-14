@@ -1,0 +1,9 @@
+policy_module(intelplugins, 1.0)
+
+gen_require(`
+        type container_file_t;
+        type device_t;
+')
+
+container_domain_template(intelplugins)
+

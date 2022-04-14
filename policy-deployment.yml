@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: policy-deployment
+  namespace: temp-project-ck
+spec:
+  selector:
+    matchLabels:
+      app: policy-deployment
+  template:
+    metadata:
+      labels:
+        app: policy-deployment
+    spec:
+      containers:
+      - name: policy-deploy
+        image: >-
+          quay.io/ocpeng/intel_policy_deploy:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args: ["-c", "semodule -i /tmp/intelplugins.pp.bz2;while true; do sleep 60;done"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: var-lib-selinux
+          mountPath: /var/lib/selinux
+        - name: etc-selinux
+          mountPath: /etc/selinux
+      volumes:
+      - name: var-lib-selinux
+        hostPath:
+          path: /var/lib/selinux
+          type: DirectoryOrCreate
+      - name: etc-selinux
+        hostPath:
+          path: /etc/selinux
+          type: DirectoryOrCreate
+
