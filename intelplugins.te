@@ -7,3 +7,8 @@ gen_require(`
 
 container_domain_template(intelplugins)
 
+
+#============= intelplugins_t ==============
+allow intelplugins_t container_runtime_t:unix_stream_socket connectto;
+allow intelplugins_t device_t:chr_file getattr;
+
