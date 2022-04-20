@@ -18,7 +18,7 @@ spec:
           quay.io/ocpeng/intel_policy_deploy:latest
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash"]
-        args: ["-c", "semodule -i /tmp/intelplugins.pp.bz2;while true; do sleep 60;done"]
+        args: ["-c", "semodule -i /tmp/container_sr.pp.bz2;while true; do sleep 60;done"]
         securityContext:
           privileged: true
         volumeMounts:
