@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: intel-plugins-policy
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: plugins-policy
+  namespace: intel-plugins-policy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: plugins-policy
+rules:
+- apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - privileged
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: plugins-policy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: plugins-policy
+subjects:
+- kind: ServiceAccount
+  name: plugins-policy
+  namespace: intel-plugins-policy
