@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: policy-deployment
-  namespace: temp-project-ck
+  namespace: intel-plugins-policy
 spec:
   selector:
     matchLabels:
@@ -35,4 +35,5 @@ spec:
         hostPath:
           path: /etc/selinux
           type: DirectoryOrCreate
+      serviceAccountName: plugins-policy
 
