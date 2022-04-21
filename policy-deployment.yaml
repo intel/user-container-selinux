@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: policy-deployment
-  namespace: intel-plugins-policy
+  namespace: user-plugins-policy
 spec:
   selector:
     matchLabels:
@@ -17,8 +17,6 @@ spec:
         image: >-
           quay.io/ocpeng/intel_policy_deploy:latest
         imagePullPolicy: IfNotPresent
-        command: ["/bin/bash"]
-        args: ["-c", "semodule -i /opt/selinux-policy/container_sr.pp.bz2;while true; do sleep 60;done"]
         securityContext:
           privileged: true
         volumeMounts:
@@ -36,4 +34,3 @@ spec:
           path: /etc/selinux
           type: DirectoryOrCreate
       serviceAccountName: plugins-policy
-

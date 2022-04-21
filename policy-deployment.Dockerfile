@@ -18,16 +18,26 @@
 # FINAL_BASE can be used to configure the base image of the final image.
 #
 # FINAL_BASE is primarily used to build Redhat Certified Openshift Operator container images that must be UBI based.
-ARG FINAL_BASE=registry.access.redhat.com/ubi8/ubi:latest
+ARG FINAL_BASE=registry.access.redhat.com/ubi8-minimal:latest
 FROM ${FINAL_BASE} 
+
+LABEL name='policy-deployment' 
+LABEL vendor='Intel®' 
+LABEL version='0.1' 
+LABEL release='1' 
+LABEL summary='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift' 
+LABEL description='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift'
 
 ARG DIR=/user-container-selinux
 WORKDIR ${DIR}
 COPY . .
 
-RUN yum -y install --disableplugin=subscription-manager selinux-policy
+RUN microdnf update && \
+    microdnf install --disableplugin=subscription-manager selinux-policy make && \
+    microdnf clean all && rm -rf /var/cache/yum
 
 RUN install -D ${DIR}/LICENSE /licenses/user-container-selinux/LICENSE && \
     mkdir -p /opt/selinux-policy && cp container_sr.pp.bz2 /opt/selinux-policy/container_sr.pp.bz2
 
-CMD bash
+
+ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp.bz2;while true; do sleep 60;done" ]
