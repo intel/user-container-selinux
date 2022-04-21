@@ -12,3 +12,11 @@ This policy creates a new domain called container_sr_t and the device plugins ru
 - run 'oc apply -f rbac.yaml'
 - run 'oc apply -f policy-deployment.yaml'
 
+To deploy the policy you can just do 'oc apply -f policy-deployment.yml'
+
+
+## License
+
+All of the source code required to build user-container-selinux
+is available under Open Source licenses. Binaries are distributed as container images on
+RedHat Container Registry. Those images contain license texts under `/licenses`.
