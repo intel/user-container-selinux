@@ -1,19 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: user-container-selinux
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: user-container-selinux
+  namespace: user-container-selinux
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: user-container-selinux
+rules:
+- apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - privileged
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: user-container-selinux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: user-container-selinux
+subjects:
+- kind: ServiceAccount
+  name: user-container-selinux
+  namespace: user-container-selinux
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: policy-deployment
-  namespace: user-plugins-policy
+  name: container-selinux-policy
+  namespace: user-container-selinux
 spec:
   selector:
     matchLabels:
-      app: policy-deployment
+      app: container-selinux-policy
   template:
     metadata:
       labels:
-        app: policy-deployment
+        app: container-selinux-policy
     spec:
       containers:
-      - name: policy-deploy
+      - name: container-selinux
         image: >-
           quay.io/ocpeng/intel_policy_deploy:latest
         imagePullPolicy: IfNotPresent
@@ -33,4 +71,4 @@ spec:
         hostPath:
           path: /etc/selinux
           type: DirectoryOrCreate
-      serviceAccountName: plugins-policy
+      serviceAccountName: user-container-selinux
