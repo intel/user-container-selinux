@@ -47,4 +47,4 @@ RUN dnf -y install selinux-policy && \
 
 COPY --from=builder /install_root /
 
-ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp;while true; do sleep 60;done" ]
+ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp" ]
