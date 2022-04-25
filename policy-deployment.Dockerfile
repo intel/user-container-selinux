@@ -18,8 +18,22 @@
 # FINAL_BASE can be used to configure the base image of the final image.
 #
 # FINAL_BASE is primarily used to build Redhat Certified Openshift Operator container images that must be UBI based.
-ARG FINAL_BASE=registry.access.redhat.com/ubi8-minimal:latest
-FROM ${FINAL_BASE} 
+ARG FINAL_BASE=registry.access.redhat.com/ubi8:latest
+FROM centos as builder
+
+ARG DIR=/user-container-selinux
+WORKDIR ${DIR}
+COPY . .
+
+RUN dnf -y --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos && \
+    dnf -y distro-sync && \
+    dnf -y install make selinux-policy selinux-policy-devel container-selinux && \
+    make -f /usr/share/selinux/devel/Makefile
+
+RUN install -D ${DIR}/LICENSE /install_root/licenses/user-container-selinux/LICENSE && \
+    install -D ${DIR}/container_sr.pp /install_root/opt/selinux-policy/container_sr.pp
+
+FROM ${FINAL_BASE}
 
 LABEL name='policy-deployment' 
 LABEL vendor='Intel®' 
@@ -28,16 +42,9 @@ LABEL release='1'
 LABEL summary='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift' 
 LABEL description='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift'
 
-ARG DIR=/user-container-selinux
-WORKDIR ${DIR}
-COPY . .
+RUN dnf -y install selinux-policy && \
+    dnf clean all && rm -rf /var/cache/yum
 
-RUN microdnf update && \
-    microdnf install --disableplugin=subscription-manager selinux-policy make && \
-    microdnf clean all && rm -rf /var/cache/yum
+COPY --from=builder /install_root /
 
-RUN install -D ${DIR}/LICENSE /licenses/user-container-selinux/LICENSE && \
-    mkdir -p /opt/selinux-policy && cp container_sr.pp.bz2 /opt/selinux-policy/container_sr.pp.bz2
-
-
-ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp.bz2;while true; do sleep 60;done" ]
+ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp;while true; do sleep 60;done" ]
