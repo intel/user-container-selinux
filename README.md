@@ -9,7 +9,6 @@ This policy creates a new domain called container_sr_t and the device plugins ru
 ## Deploying the SELinux policy
 
 - clone this repository
-- run `oc apply -f rbac.yaml`
 - run `oc apply -f policy-deployment.yaml` to deploy the policy
 
 
