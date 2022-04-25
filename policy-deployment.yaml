@@ -50,8 +50,8 @@ spec:
       labels:
         app: container-selinux-policy
     spec:
-      containers:
-      - name: container-selinux
+      initContainers:
+      - name: container-selinux-init
         image: >-
           quay.io/ocpeng/intel_policy_deploy:latest
         imagePullPolicy: IfNotPresent
@@ -62,6 +62,13 @@ spec:
           mountPath: /var/lib/selinux
         - name: etc-selinux
           mountPath: /etc/selinux
+      containers:
+      - name: container-selinux
+        image: >-
+         registry.access.redhat.com/ubi8-minimal:latest
+        imagePullPolicy: IfNotPresent
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 60; done;" ]
       volumes:
       - name: var-lib-selinux
         hostPath:
