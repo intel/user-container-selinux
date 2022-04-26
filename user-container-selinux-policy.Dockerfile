@@ -18,7 +18,7 @@
 # FINAL_BASE can be used to configure the base image of the final image.
 #
 # FINAL_BASE is primarily used to build Redhat Certified Openshift Operator container images that must be UBI based.
-ARG FINAL_BASE=registry.access.redhat.com/ubi8:latest
+ARG FINAL_BASE=registry.access.redhat.com/ubi8-minimal:latest
 FROM centos as builder
 
 ARG DIR=/user-container-selinux
@@ -35,15 +35,15 @@ RUN install -D ${DIR}/LICENSE /install_root/licenses/user-container-selinux/LICE
 
 FROM ${FINAL_BASE}
 
-LABEL name='policy-deployment' 
+LABEL name='user-container-selinux-policy' 
 LABEL vendor='Intel®' 
 LABEL version='0.1' 
 LABEL release='1' 
-LABEL summary='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift' 
-LABEL description='SELinux policy for device plugins and deployment mechanism for RedHat OpenShift'
+LABEL summary='SELinux policy deployment tailored for device plugins or other user workloads for RedHat OpenShift' 
+LABEL description='SELinux policy deployment tailored for device plugins or other user workloads for RedHat OpenShift Container Platform. In RedHat OpenShift, the SELinux is in enforcing mode by default. Containers run in the container_t domain by default, but containers running device plugins do not have enough privileges to run correctly. This policy grants the necessary privileges to those policies.'
 
-RUN dnf -y install selinux-policy && \
-    dnf clean all && rm -rf /var/cache/yum
+RUN microdnf -y install selinux-policy && \
+    microdnf clean all && rm -rf /var/cache/yum
 
 COPY --from=builder /install_root /
 
