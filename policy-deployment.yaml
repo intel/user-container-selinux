@@ -65,7 +65,7 @@ spec:
       containers:
       - name: container-selinux
         image: >-
-         registry.access.redhat.com/ubi8-minimal:latest
+          registry.access.redhat.com/ubi8-micro:latest
         imagePullPolicy: IfNotPresent
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "while true; do sleep 60; done;" ]
