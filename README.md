@@ -1,25 +1,25 @@
 # Overview
-This repository contains a user tailored container SELinux policies and the method for deploying these policies on Red Hat OpenShift Container Platform. This SELinux policy is required for the plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift with proper SELinux permissions.
+This repository contains a user tailored container SELinux policies and the method for deploying these policies on Red Hat OpenShift Container Platform. These SELinux policies are required for the plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift Container Platform with proper SELinux permissions.
 
-This policy creates a new domain called container_device_t and the device plugins run as that label and have all the necessary privileges.
-The policy is derived from the [container-selinux](https://github.com/containers/container-selinux) project.
+These policies creates a new domain called container_device_t and the device plugins run as that label and have all the necessary privileges.
+These policies are derived from the [container-selinux](https://github.com/containers/container-selinux) project.
 
-## Building the SELinux policy
+## Building the SELinux policies
 
-The policy is part of the image and is built during docker build. To build the policy:
-- Install selinux-policy development package `dnf -y selinux-policy-devel`
-- Run command `make -f /usr/share/selinux/devel/Makefile`
+The policies are part of the container image and built using `docker build`. To build such policies, install selinux-policy development package using below commands 
+```
+$ sudo dnf -y selinux-policy-devel
+$ make -f /usr/share/selinux/devel/Makefile
+```
 
 ## Deploying the SELinux policy
 
-- To deploy the policy, run 
+To deploy the policy on OpenShift Container Platform, run 
 ```
-oc apply -f https://raw.githubusercontent.com/mregmi/user-container-selinux/main/policy-deployment.yaml
+$ oc apply -f https://raw.githubusercontent.com/intel/user-container-selinux/main/policy-deployment.yaml
 ```
 
 
 ## License
 
-All of the source code required to build user-container-selinux
-is available under Open Source licenses. Binaries are distributed as container images on
-Red Hat Container Registry. Those images contain license texts under `/licenses`.
+user-container-selinux is under GNU GPL v2.0 license. See the [LICENSE](https://github.com/intel/user-container-selinux/blob/main/LICENSE) file for details.
