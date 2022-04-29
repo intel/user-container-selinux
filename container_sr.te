@@ -3,12 +3,26 @@ policy_module(container_sr, 1.0)
 gen_require(`
         type container_file_t;
         type device_t;
+        type kubernetes_file_t;
+        type device_node;
 ')
 
-container_domain_template(container_sr)
+# Standard container which needs to be allowed to use any device
+container_domain_template(container_device)
+allow container_device_t device_node:chr_file rw_chr_file_perms;
 
+# Standard container which needs to be allowed to use any device and
+# communicate with kublet
+container_domain_template(container_device_plugin)
+allow container_device_plugin_t device_node:chr_file rw_chr_file_perms;
+dev_rw_sysfs(container_device_plugin_t)
+allow container_device_plugin_t container_runtime_t:unix_stream_socket connectto;
 
-#============= container_sr_t ==============
-allow container_sr_t container_runtime_t:unix_stream_socket connectto;
-allow container_sr_t device_t:chr_file getattr;
-
+# Standard container which needs to be allowed to use any device and
+# modify kublet configuration
+container_domain_template(container_device_plugin_init)
+allow container_device_plugin_init_t device_node:chr_file rw_chr_file_perms;
+dev_rw_sysfs(container_device_plugin_t)
+manage_dirs_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)
+manage_files_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)
+manage_lnk_files_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)

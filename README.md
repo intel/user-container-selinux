@@ -1,7 +1,7 @@
 # Overview
 This repository contains a user tailored container SELinux policies and the method for deploying these policies on Red Hat OpenShift Container Platform. These SELinux policies are required for the plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift Container Platform with proper SELinux permissions.
 
-These policies creates a new domain called container_device_t and the device plugins run as that label and have all the necessary privileges.
+These policies creates new domains called `container_device_t` for user workloads, `container_device_plugin_t` for device plugins and `container_device_plugin_init_t` for init containers. The device plugins run as that label and have all the necessary privileges.
 These policies are derived from the [container-selinux](https://github.com/containers/container-selinux) project.
 
 ## Building the SELinux policies
