@@ -42,7 +42,8 @@ LABEL release='1'
 LABEL summary='SELinux policy deployment tailored for device plugins or other user workloads for RedHat OpenShift' 
 LABEL description='SELinux policy deployment tailored for device plugins or other user workloads for RedHat OpenShift Container Platform. In RedHat OpenShift, the SELinux is in enforcing mode by default. Containers run in the container_t domain by default, but containers running device plugins do not have enough privileges to run correctly. This policy grants the necessary privileges to those containers.'
 
-RUN microdnf -y install selinux-policy && \
+RUN microdnf upgrade && \
+    microdnf -y install selinux-policy && \
     microdnf clean all && rm -rf /var/cache/yum
 
 COPY --from=builder /install_root /
