@@ -21,5 +21,7 @@ $ oc apply -f https://raw.githubusercontent.com/intel/user-container-selinux/mai
 
 
 ## License
+user-container-selinux is under GNU GPL v2.0 license. See the [LICENSE](/LICENSE) file for details.
 
-user-container-selinux is under GNU GPL v2.0 license. See the [LICENSE](https://github.com/intel/user-container-selinux/blob/main/LICENSE) file for details.
+## Security
+If you discover any potential security vulnerability, please follow the instructions in the [security.md](/security.md) file.
