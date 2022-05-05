@@ -28,7 +28,7 @@ RUN dnf -y --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-
     make -f /usr/share/selinux/devel/Makefile
 
 RUN install -D ${DIR}/LICENSE /install_root/licenses/user-container-selinux/LICENSE && \
-    install -D ${DIR}/container_sr.pp /install_root/opt/selinux-policy/container_sr.pp
+    install -D ${DIR}/container_device.pp /install_root/opt/selinux-policy/container_device.pp
 
 FROM ${FINAL_BASE}
 
@@ -45,4 +45,4 @@ RUN microdnf upgrade && \
 
 COPY --from=builder /install_root /
 
-ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_sr.pp" ]
+ENTRYPOINT [ "/bin/sh", "-c", "semodule -i /opt/selinux-policy/container_device.pp" ]
