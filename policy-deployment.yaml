@@ -53,7 +53,7 @@ spec:
       initContainers:
       - name: container-selinux-init
         image: >-
-          quay.io/ocpeng/user-container-selinux:latest
+          registry.connect.redhat.com/intel/user-container-selinux:latest
         imagePullPolicy: Always
         securityContext:
           privileged: true
