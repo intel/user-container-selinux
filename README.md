@@ -1,5 +1,5 @@
 # Overview
-This repository contains user tailored container SELinux policies and the method for deploying these policies on Red Hat* OpenShift* Container Platform. These SELinux policies are required for the device plugins and the workloads leveraging these device plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift Container Platform. So the device plugin and workload don't have to run as the privileged container, see [issue](https://github.com/intel/intel-device-plugins-for-kubernetes/issues/762).
+This repository contains user tailored container SELinux policies and the method for deploying these policies on Red Hat* OpenShift* Container Platform. These SELinux policies are required for the device plugins and the workloads leveraging these device plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift Container Platform. So the device plugin and workload do not have to run as the privileged container, see [issue](https://github.com/intel/intel-device-plugins-for-kubernetes/issues/762).
 
 These policies create new domain called `container_device_t` for user workloads, `container_device_plugin_t` for device plugins and `container_device_plugin_init_t` for init containers. The device plugins are labeled as `container_device_plugin_t` by SELinux so they can be assigned the proper permissions to access the resources on the host.
 These policies are derived from the corresponding policies in [container-selinux](https://github.com/containers/container-selinux) project.
@@ -28,7 +28,7 @@ To verify that it is installed properly run the command below and verify that it
 ```
 $ sudo semodule -l | grep container_device 
 ```
-The `container_device` policy shows that the policy is installed properly.
+The grep result of container_device shows that the policy is installed correctly.
 
 ## Deploying the SELinux policy on a Red Hat OpenShift cluster
 
