@@ -30,12 +30,14 @@ allow container_device_t device_node:chr_file rw_chr_file_perms;
 # Standard container which needs to be allowed to use any device and
 # communicate with kublet
 container_domain_template(container_device_plugin)
+dev_rw_sysfs(container_device_plugin_t)
 allow container_device_plugin_t device_node:chr_file rw_chr_file_perms;
 allow container_device_plugin_t container_runtime_t:unix_stream_socket connectto;
 
 # Standard container which needs to be allowed to use any device and
 # modify kublet configuration
 container_domain_template(container_device_plugin_init)
+dev_rw_sysfs(container_device_plugin_init_t)
 manage_dirs_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)
 manage_files_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)
 manage_lnk_files_pattern(container_device_plugin_init_t, kubernetes_file_t, kubernetes_file_t)
