@@ -1,3 +1,14 @@
+PROJECT NOT UNDER ACTIVE MANAGEMENT
+
+This project will no longer be maintained by Intel.
+
+Intel has ceased development and contributions including, but not limited to, maintenance, bug fixes, new releases, or updates, to this project.  
+
+Intel no longer accepts patches to this project.
+
+If you have an ongoing need to use this project, are interested in independently developing it, or would like to maintain patches for the open source software community, please create your own fork of this project.  
+
+Contact: webadmin@linux.intel.com
 # Overview
 This repository contains user-tailored container SELinux policies and the method for deploying these policies on Red Hat OpenShift Container Platform. These SELinux policies are required for the device plugins and the workloads leveraging these device plugins in [intel-device-plugins-for-kubernetes](https://github.com/intel/intel-device-plugins-for-kubernetes) to deploy on Red Hat OpenShift Container Platform. So the device plugin and workload do not have to run as the privileged container, see [issue](https://github.com/intel/intel-device-plugins-for-kubernetes/issues/762).
 
